@@ -81,7 +81,8 @@ class LogIn extends StatelessWidget {
                               // Navigate to SignUp page
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => SignUp()),
+                                MaterialPageRoute(
+                                    builder: (context) => SignUp()),
                               );
                             },
                             child: Text(
@@ -142,7 +143,8 @@ class LogIn extends StatelessWidget {
                             // Navigate to TampilanLupaPassword page
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => TampilanLupaPassword()),
+                              MaterialPageRoute(
+                                  builder: (context) => TampilanLupaPassword()),
                             );
                           },
                           child: Text(

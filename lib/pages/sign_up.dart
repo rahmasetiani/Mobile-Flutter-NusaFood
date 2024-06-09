@@ -1,12 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/bloc/register/register_cubit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_app/pages/log_in.dart'; // Import login page
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUp extends State<SignUp> {
+  final emailEdc = TextEditingController();
+  final passEdc = TextEditingController();
+  bool passInvisible = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: BlocListener<RegisterCubit, RegisterState>(
+        listener: (context, state) {
+          if (state is RegisterLoading) {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(const SnackBar(content: Text('Loading..')));
+          }
+          if (state is RegisterFailure) {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(SnackBar(
+                content: Text(state.msg),
+                backgroundColor: Colors.red,
+              ));
+          }
+          if (state is RegisterSuccess) {
+// context.read<AuthCubit>().loggedIn();
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(SnackBar(
+                content: Text(state.msg),
+                backgroundColor: Colors.green,
+              ));
+          }
+        },
         child: Container(
           decoration: BoxDecoration(
             color: Color(0xFFF0F4F8), // Background color
@@ -88,7 +122,8 @@ class SignUp extends StatelessWidget {
                               // Navigate to LogIn page
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => LogIn()),
+                                MaterialPageRoute(
+                                    builder: (context) => LogIn()),
                               );
                             },
                             child: Text(
@@ -103,7 +138,8 @@ class SignUp extends StatelessWidget {
                       ),
                       SizedBox(height: 20),
                       // Email Field
-                      TextField(
+                      TextFormField(
+                        controller: emailEdc,
                         decoration: InputDecoration(
                           hintText: 'enter email or username',
                           hintStyle: GoogleFonts.mavenPro(
@@ -117,7 +153,8 @@ class SignUp extends StatelessWidget {
                         thickness: 1,
                       ),
                       // Password Field
-                      TextField(
+                      TextFormField(
+                        controller: passEdc,
                         obscureText: true,
                         decoration: InputDecoration(
                           hintText: 'password',
@@ -148,7 +185,7 @@ class SignUp extends StatelessWidget {
                         color: Colors.grey,
                         thickness: 1,
                       ),
-                     
+
                       SizedBox(height: 20),
                       // Sign Up Button
                       ElevatedButton(
