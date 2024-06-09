@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_app/pages/log_in.dart';
 
-
 class Utama extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -57,16 +56,19 @@ class Utama extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black, backgroundColor: Colors.yellow,
+                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.yellow,
                   padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
                 onPressed: () {
-                   Navigator.push(
+                  Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LogIn()),
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            LoginScreen()), // Navigate to LoginScreen
                   );
                 },
                 child: Text(
@@ -83,10 +85,4 @@ class Utama extends StatelessWidget {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: Utama(),
-  ));
 }
