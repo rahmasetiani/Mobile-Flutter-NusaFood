@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "898304059646",
+    "project_id": "nusafoodcek",
+    "storage_bucket": "nusafoodcek.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:898304059646:android:a28fc72a4112bf9c355daf",
+        "android_client_info": {
+          "package_name": "com.example.flutter_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIZRaimmNIw85Waq7THQBTlyJrrBgqwBA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
