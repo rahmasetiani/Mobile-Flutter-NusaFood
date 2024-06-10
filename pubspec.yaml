@@ -1,5 +1,5 @@
 name: flutter_app
-description: "A new Flutter project."
+description: 'A new Flutter project.'
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
@@ -11,10 +11,12 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.6
+  flutter_bloc: ^8.0.1
   google_fonts: ^6.2.1
-  url_launcher: ^6.0.20  # or the latest version
+  url_launcher: ^6.0.20 # or the latest version
   firebase_core: ^3.0.0
-
+  firebase_auth: ^5.0.0
+  bloc: ^8.1.4
 
 dev_dependencies:
   flutter_test:
@@ -25,76 +27,75 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-  - assets/images/image_15.png
-  - assets/images/rectangle_33.png
-  - assets/images/image_19.png
-  - assets/vectors/container_7_x2.svg
-  - assets/vectors/shape_x2.svg
-  - assets/images/image_15.png
-  - assets/images/image_191.png
-  - assets/images/rectangle_33.png
-  - assets/vectors/shape_2_x2.svg
-  - assets/vectors/container_4_x2.svg
-  - assets/images/image_10.png
-  - assets/images/image_11.png
-  - assets/images/whats_app_image_20240417_at_15271.png
-  - assets/vectors/ellipse_2_x2.svg
-  - assets/images/search_1.png
-  - assets/images/whats_app_image_20240417_at_15271.png
-  - assets/images/twitter_11.png
-  - assets/images/facebook_11.png
-  - assets/vectors/container_8_x2.svg
-  - assets/vectors/group_2261_x2.svg
-  - assets/images/image_202.png
-  - assets/images/rectangle_322.png
-  - assets/images/image_191.png
-  - assets/images/rectangle_30.png
-  - assets/images/star_15.png
-  - assets/images/image_4.png
-  - assets/vectors/container_x2.svg
-  - assets/images/rectangle_32.png
-  - assets/images/rectangle_301.png
-  - assets/images/star_15.png
-  - assets/images/image_192.png
-  - assets/images/image_201.png
-  - assets/images/image_4.png
-  - assets/vectors/container_6_x2.svg
-  - assets/images/star_15.png
-  - assets/images/image_4.png
-  - assets/images/rectangle_302.png
-  - assets/images/image_19.png
-  - assets/images/image_20.png
-  - assets/images/rectangle_321.png
-  - assets/vectors/container_5_x2.svg
-  - assets/images/rectangle_33.png
-  - assets/images/image_15.png
-  - assets/images/image_192.png
-  - assets/vectors/shape_1_x2.svg
-  - assets/vectors/container_1_x2.svg
-  - assets/images/facebook_11.png
-  - assets/images/twitter_11.png
-  - assets/images/whats_app_image_20240417_at_15271.png
-  - assets/images/search_1.png
-  - assets/vectors/container_9_x2.svg
-  - assets/vectors/container_3_x2.svg
-  - assets/images/twitter_11.png
-  - assets/images/whats_app_image_20240417_at_15271.png
-  - assets/images/facebook_11.png
-  - assets/images/search_1.png
-  - assets/vectors/group_226_x2.svg
-  - assets/vectors/group_227_x2.svg
-  - assets/vectors/container_2_x2.svg
-  - assets/images/rectangle_28.jpeg
-  - assets/images/image_13.png
-  - assets/images/pizza_1.png
-  - assets/images/masala_dosa_2.png
-  - assets/images/image_12.png
-  - assets/images/search_11.png
-  - assets/images/rectangle_16.png
-  - assets/images/cone_shaped_1.png
-  - assets/images/sushi_1.png
-  - assets/images/snack.jpg
-  - assets/images/manggleng.jpeg
-  - assets/images/salepisang.jpeg
-  - assets/images/kerupukudang.jpeg
-
+    - assets/images/image_15.png
+    - assets/images/rectangle_33.png
+    - assets/images/image_19.png
+    - assets/vectors/container_7_x2.svg
+    - assets/vectors/shape_x2.svg
+    - assets/images/image_15.png
+    - assets/images/image_191.png
+    - assets/images/rectangle_33.png
+    - assets/vectors/shape_2_x2.svg
+    - assets/vectors/container_4_x2.svg
+    - assets/images/image_10.png
+    - assets/images/image_11.png
+    - assets/images/whats_app_image_20240417_at_15271.png
+    - assets/vectors/ellipse_2_x2.svg
+    - assets/images/search_1.png
+    - assets/images/whats_app_image_20240417_at_15271.png
+    - assets/images/twitter_11.png
+    - assets/images/facebook_11.png
+    - assets/vectors/container_8_x2.svg
+    - assets/vectors/group_2261_x2.svg
+    - assets/images/image_202.png
+    - assets/images/rectangle_322.png
+    - assets/images/image_191.png
+    - assets/images/rectangle_30.png
+    - assets/images/star_15.png
+    - assets/images/image_4.png
+    - assets/vectors/container_x2.svg
+    - assets/images/rectangle_32.png
+    - assets/images/rectangle_301.png
+    - assets/images/star_15.png
+    - assets/images/image_192.png
+    - assets/images/image_201.png
+    - assets/images/image_4.png
+    - assets/vectors/container_6_x2.svg
+    - assets/images/star_15.png
+    - assets/images/image_4.png
+    - assets/images/rectangle_302.png
+    - assets/images/image_19.png
+    - assets/images/image_20.png
+    - assets/images/rectangle_321.png
+    - assets/vectors/container_5_x2.svg
+    - assets/images/rectangle_33.png
+    - assets/images/image_15.png
+    - assets/images/image_192.png
+    - assets/vectors/shape_1_x2.svg
+    - assets/vectors/container_1_x2.svg
+    - assets/images/facebook_11.png
+    - assets/images/twitter_11.png
+    - assets/images/whats_app_image_20240417_at_15271.png
+    - assets/images/search_1.png
+    - assets/vectors/container_9_x2.svg
+    - assets/vectors/container_3_x2.svg
+    - assets/images/twitter_11.png
+    - assets/images/whats_app_image_20240417_at_15271.png
+    - assets/images/facebook_11.png
+    - assets/images/search_1.png
+    - assets/vectors/group_226_x2.svg
+    - assets/vectors/group_227_x2.svg
+    - assets/vectors/container_2_x2.svg
+    - assets/images/rectangle_28.jpeg
+    - assets/images/image_13.png
+    - assets/images/pizza_1.png
+    - assets/images/masala_dosa_2.png
+    - assets/images/image_12.png
+    - assets/images/search_11.png
+    - assets/images/rectangle_16.png
+    - assets/images/cone_shaped_1.png
+    - assets/images/sushi_1.png
+    - assets/images/snack.jpg
+    - assets/images/manggleng.jpeg
+    - assets/images/salepisang.jpeg
+    - assets/images/kerupukudang.jpeg

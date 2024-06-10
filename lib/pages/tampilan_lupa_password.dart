@@ -1,8 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/pages/log_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_app/pages/log_in.dart';
 
-class TampilanLupaPassword extends StatelessWidget {
+class UpdatePasswordScreen extends StatefulWidget {
+  @override
+  _UpdatePasswordScreenState createState() => _UpdatePasswordScreenState();
+}
+
+class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
+  final emailEdc = TextEditingController();
+  final newPassEdc = TextEditingController();
+  final confirmPassEdc = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  void _updatePassword() async {
+    if (newPassEdc.text != confirmPassEdc.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Passwords do not match.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    try {
+      await _auth.sendPasswordResetEmail(email: emailEdc.text);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Password reset email sent. Please check your email.'),
+          backgroundColor: Colors.green,
+        ),
+      );
+
+      // Redirect to login screen
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to send password reset email: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    emailEdc.dispose();
+    newPassEdc.dispose();
+    confirmPassEdc.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +125,7 @@ class TampilanLupaPassword extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.only(bottom: 20),
                       child: Text(
-                        'Forget Password',
+                        'Reset Password',
                         style: GoogleFonts.mavenPro(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -80,40 +134,36 @@ class TampilanLupaPassword extends StatelessWidget {
                       ),
                     ),
                     TextField(
+                      controller: emailEdc,
                       decoration: InputDecoration(
-                        labelText: 'enter email or username',
+                        labelText: 'Email',
                         labelStyle: TextStyle(color: Colors.grey),
                         border: UnderlineInputBorder(),
                       ),
                     ),
                     SizedBox(height: 20),
                     TextField(
+                      controller: newPassEdc,
                       obscureText: true,
                       decoration: InputDecoration(
-                        labelText: 'new password',
+                        labelText: 'New password',
                         labelStyle: TextStyle(color: Colors.grey),
                         border: UnderlineInputBorder(),
-                        suffixIcon: Icon(Icons.visibility_off),
                       ),
                     ),
                     SizedBox(height: 20),
                     TextField(
+                      controller: confirmPassEdc,
                       obscureText: true,
                       decoration: InputDecoration(
-                        labelText: 'confirm password',
+                        labelText: 'Confirm new password',
                         labelStyle: TextStyle(color: Colors.grey),
                         border: UnderlineInputBorder(),
-                        suffixIcon: Icon(Icons.visibility_off),
                       ),
                     ),
                     SizedBox(height: 30),
                     ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => LogIn()),
-                        );
-                      },
+                      onPressed: _updatePassword,
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.black,
                         backgroundColor: Color(0xFFF9A825),
@@ -127,7 +177,7 @@ class TampilanLupaPassword extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      child: Text('Log In'),
+                      child: Text('Reset Password'),
                     ),
                   ],
                 ),
