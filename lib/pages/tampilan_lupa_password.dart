@@ -123,9 +123,9 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                 child: Column(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(bottom: 20),
+                      margin: EdgeInsets.only(bottom: 40),
                       child: Text(
-                        'Reset Password',
+                        'Reset',
                         style: GoogleFonts.mavenPro(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
