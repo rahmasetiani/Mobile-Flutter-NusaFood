@@ -6,6 +6,7 @@ import 'package:flutter_app/firebase_options.dart';
 import 'package:flutter_app/pages/log_in.dart';
 import 'package:flutter_app/pages/sign_up.dart';
 import 'package:flutter_app/pages/utama.dart';
+import 'package:flutter_app/pages/caraappetizer/cara_gado.dart'; // Import halaman CaraGado
 import 'package:flutter_app/utils/routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

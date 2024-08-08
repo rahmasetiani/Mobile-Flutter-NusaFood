@@ -1,283 +1,195 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'dart:ui';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_app/utils.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_app/repositories/auth_repo.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class CaraGado extends StatelessWidget {
+class CaraGado extends StatefulWidget {
+  @override
+  _CaraGadoState createState() => _CaraGadoState();
+}
+
+class _CaraGadoState extends State<CaraGado> {
+  late YoutubePlayerController _controller;
+  final TextEditingController _commentController = TextEditingController();
+  File? _image;
+  final AuthRepo _authRepo = AuthRepo();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = YoutubePlayerController(
+      initialVideoId: 'Jm1ThTdVgwo', // ID Video YouTube
+      flags: YoutubePlayerFlags(
+        autoPlay: false,
+        mute: false,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _commentController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      if (image != null) {
+        _image = File(image.path);
+      }
+    });
+  }
+
+  Future<void> _uploadCommentAndImage() async {
+    if (_image == null || _commentController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please select an image and enter a comment')),
+      );
+      return;
+    }
+
+    try {
+      await _authRepo.uploadCommentAndImage(
+        comment: _commentController.text,
+        image: _image!,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Comment and image uploaded successfully')),
+      );
+      setState(() {
+        _image = null;
+        _commentController.clear();
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to upload: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return 
-    Container(
-      decoration: BoxDecoration(
-        color: Color(0xFFC9FA06),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0x40000000),
-            offset: Offset(0, 4),
-            blurRadius: 2,
-          ),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Cara Memasak Gado-Gado'),
       ),
-      child: Stack(
-        children: [
-          Positioned(
-            top: -75,
-            child: Opacity(
-              opacity: 0.85,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Color(0xFFFFFFFF),
-                  borderRadius: BorderRadius.circular(30),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              YoutubePlayer(
+                controller: _controller,
+                showVideoProgressIndicator: true,
+                progressIndicatorColor: Colors.amber,
+                progressColors: ProgressBarColors(
+                  playedColor: Colors.amber,
+                  handleColor: Colors.amberAccent,
                 ),
-                child: Container(
-                  width: 375,
-                  height: 763,
-                ),
+                onReady: () {
+                  _controller.addListener(() {});
+                },
               ),
-            ),
-          ),
-    Container(
-            padding: EdgeInsets.fromLTRB(22, 21, 29, 61),
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Positioned(
-                  left: 5,
-                  right: -3,
-                  bottom: -33,
-                  child: Opacity(
-                    opacity: 0.85,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xFF000000)),
-                        borderRadius: BorderRadius.circular(25),
-                        color: Color(0xFFFFFFFD),
-                      ),
-                      child: Container(
-                        width: 322,
-                        height: 358,
-                      ),
-                    ),
-                  ),
+              SizedBox(height: 8),
+              Text(
+                'Klik gambar di atas untuk menonton video tutorial.',
+                style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
+              ),
+              SizedBox(height: 16),
+              Text(
+                'Bahan Masakan:',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              Text(
+                '- 200g kacang tanah\n'
+                '- 100ml air matang\n'
+                '- 1 siung bawang putih\n'
+                '- 2 lembar daun jeruk\n'
+                '- 2 sdm air asam jawa\n'
+                '- Garam secukupnya\n'
+                '- Gula merah secukupnya\n'
+                '- Sayuran (kentang, tauge, kol, dll)\n'
+                '- Tahu dan tempe\n'
+                '- Telur rebus\n',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 16),
+              Text(
+                'Cara Pembuatan:',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              Text(
+                '1. Goreng kacang tanah hingga matang.\n'
+                '2. Haluskan kacang tanah dengan bawang putih dan daun jeruk.\n'
+                '3. Campurkan bumbu halus dengan air asam jawa, garam, dan gula merah.\n'
+                '4. Rebus sayuran hingga matang.\n'
+                '5. Goreng tahu dan tempe hingga kecokelatan.\n'
+                '6. Sajikan sayuran, tahu, tempe, dan telur dengan saus kacang.\n',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 16),
+              Text(
+                'Tambahkan Komentar dan Foto Hasil Masakan Anda:',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              TextField(
+                controller: _commentController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Komentar',
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 35),
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: SizedBox(
-                            width: 218.7,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                                  child: SizedBox(
-                                    width: 9,
-                                    height: 18,
-                                    child: SvgPicture.asset(
-                                      'assets/vectors/container_x2.svg',
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                                  child: Text(
-                                    'Gado - Gado',
-                                    style: GoogleFonts.getFont(
-                                      'Maven Pro',
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 18,
-                                      color: Color(0xFF000000),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(12, 0, 0, 18),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage(
-                                'assets/images/rectangle_33.png',
-                              ),
-                            ),
-                          ),
-                          child: Stack(
-                            children: [
-                            Positioned(
-                              left: 0,
-                              right: 0,
-                              top: 0,
-                              bottom: 0,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: AssetImage(
-                                      'assets/images/image_19.png',
-                                    ),
-                                  ),
-                                ),
-                                child: Container(
-                                  width: 312,
-                                  height: 146,
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              left: 130,
-                              top: 55,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFD9D9D9),
-                                  borderRadius: BorderRadius.circular(23.5),
-                                ),
-                                child: Container(
-                                  width: 47,
-                                  height: 47,
-                                ),
-                              ),
-                            ),
-                      Container(
-                                height: 146,
-                                padding: EdgeInsets.fromLTRB(0, 55, 5, 44),
-                                child: SizedBox(
-                                  width: 47,
-                                  height: 47,
-                                  child: SvgPicture.asset(
-                                    'assets/vectors/shape_1_x2.svg',
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(17, 0, 0, 33),
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          child: SizedBox(
-                            width: 192.1,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(0, 0, 7.5, 0),
-                                  child: SizedBox(
-                                    width: 145.5,
-                                    child: Text(
-                                      'PROGRESS',
-                                      style: GoogleFonts.getFont(
-                                        'Inter',
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 12,
-                                        color: Color(0xFFFFFFFF),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Text(
-                                  'FINISH',
-                                  style: GoogleFonts.getFont(
-                                    'Inter',
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12,
-                                    color: Color(0xFFFFFFFF),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(18, 0, 22.1, 0),
-                        child: RichText(
-                          text: TextSpan(
-                            text: 'Bahan-bahan:                      ',
-                            style: GoogleFonts.getFont(
-                              'Inter',
-                              fontWeight: FontWeight.w600,
-                              fontSize: 10,
-                              color: Color(0xFF000000),
-                            ),
-                            children: [
-                              TextSpan(
-                                text: 'Sayuran segar (kentang rebus, tauge, ketimun, kubis, tomat, daun selada)'
-                      'Telur rebus (2 butir, belah dua)'
-                      'Tahu goreng (potong-potong)'
-                      'Tempe goreng (potong-potong)'
-                      'Bawang goreng (opsional, untuk taburan)',
-                      
-                                style: GoogleFonts.getFont(
-                                  'Inter',
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 10,
-                                  height: 1.3,
-                                ),
-                              ),
-                              TextSpan(
-                                text: '                     Peralatan:                      ',
-                              ),
-                              TextSpan(
-                                text: 'Kacang tanah, sangrai dan haluskan (100 gram)'
-                      'Gula merah (1-2 sendok makan)'
-                      'Air (150 ml)'
-                     ' Santan kental (100 ml)'
-                      'Garam (secukupnya)'
-                      'Air asam jawa (sesuai selera)   ',
-                                style: GoogleFonts.getFont(
-                                  'Inter',
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 10,
-                                  height: 1.3,
-                                ),
-                              ),
-                              TextSpan(
-                                text: 'Cara Membuat:                      ',
-                              ),
-                              TextSpan(
-                                text: 'Campur kacang tanah, gula merah, air, dan santan dalam panci. Panaskan di atas api sedang sambil diaduk hingga mendidih.'
-                      'Tambahkan garam dan air asam jawa, lalu aduk rata. Angkat dan biarkan saus kacang dingin.'
-                      'Susun sayuran, telur, tahu, dan tempe di atas piring saji.'
-                      'Siram saus kacang di atasnya.'
-                      'Taburkan bawang goreng sebagai hiasan (opsional).'
-                      'Gado-gado siap disajikan!',
-                                style: GoogleFonts.getFont(
-                                  'Inter',
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 10,
-                                  height: 1.3,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+                maxLines: 3,
+              ),
+              SizedBox(height: 8),
+              _image == null
+                  ? Text('No image selected.')
+                  : Image.file(_image!),
+              ElevatedButton(
+                onPressed: _pickImage,
+                child: Text('Pilih Gambar'),
+              ),
+              ElevatedButton(
+                onPressed: _uploadCommentAndImage,
+                child: Text('Unggah Komentar dan Gambar'),
+              ),
+              SizedBox(height: 16),
+              StreamBuilder(
+                stream: FirebaseFirestore.instance.collection('comments').orderBy('timestamp', descending: true).snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  return ListView(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    children: snapshot.data!.docs.map((doc) {
+                      return ListTile(
+                        title: Text(doc['comment']),
+                        subtitle: doc['imageUrl'] != null
+                            ? Image.network(doc['imageUrl'])
+                            : null,
+                      );
+                    }).toList(),
+                  );
+                },
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter_app/pages/pilihan_appetizeer.dart';
 import 'package:flutter_app/pages/pilihan_dessert.dart';
 import 'package:flutter_app/pages/pilihan_main_course.dart';
 import 'package:flutter_app/pages/pilihan_snack.dart';
+import 'package:flutter_app/pages/log_in.dart'; // Import login page
 import 'package:google_fonts/google_fonts.dart';
 
 class Menu extends StatelessWidget {
@@ -29,47 +30,21 @@ class Menu extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      // Add navigation to menu page here
-                    },
-                    child: Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 0, 21),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Color(0xFF000000),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 40,
-                                height: 4,
-                                margin: EdgeInsets.all(4),
-                              ),
-                              Container(
-                                width: 40,
-                                height: 4,
-                                margin: EdgeInsets.all(4),
-                              ),
-                              Container(
-                                width: 40,
-                                height: 4,
-                                margin: EdgeInsets.all(4),
-                              ),
-                              Container(
-                                width: 40,
-                                height: 4,
-                                margin: EdgeInsets.all(4),
-                              ),
-                            ],
-                          ),
-                        ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.logout, color: Colors.black),
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginScreen(),
+                            ),
+                          );
+                        },
                       ),
-                    ),
+                    ],
                   ),
                   Container(
                     margin: EdgeInsets.fromLTRB(27, 0, 0, 21),

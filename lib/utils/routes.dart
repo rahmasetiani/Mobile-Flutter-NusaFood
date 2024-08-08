@@ -3,6 +3,7 @@ import 'package:flutter_app/pages/log_in.dart';
 import 'package:flutter_app/pages/menu.dart';
 import 'package:flutter_app/pages/sign_up.dart';
 import 'package:flutter_app/pages/utama.dart';
+import 'package:flutter_app/pages/caraappetizer/cara_gado.dart'; // Import halaman CaraGado
 
 MaterialPageRoute _pageRoute(
         {required Widget body, required RouteSettings settings}) =>
@@ -25,6 +26,9 @@ Route? generateRoute(RouteSettings settings) {
     case rHome:
       _route = _pageRoute(body: Menu(), settings: settings);
       break;
+    case CARA_GADO:
+      _route = _pageRoute(body: CaraGado(), settings: settings); // Rute untuk CaraGado
+      break;
   }
   return _route;
 }
@@ -34,3 +38,4 @@ const String rLogin = '/login';
 const String rRegister = '/register';
 const String rstarted = '/started';
 const String rHome = '/home';
+const String CARA_GADO = '/caragado'; // Tambahkan rute untuk CaraGado
