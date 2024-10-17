@@ -1,16 +1,36 @@
-# flutter_app
+# Mobile-Flutter-NusaFood
 
-A new Flutter project.
+**Mobile-Flutter-NusaFood** is a mobile application developed using Flutter that provides users with a variety of traditional Indonesian recipes. The app aims to promote Indonesian culinary heritage by offering easy-to-follow cooking instructions, ingredient lists, and tips for preparing authentic dishes.
 
-## Getting Started
+## Features
+- **Explore Traditional Recipes**: Discover a wide range of traditional Indonesian recipes, categorized by regions and types of dishes.
+- **Step-by-Step Cooking Instructions**: Each recipe includes detailed steps to guide users through the cooking process.
+- **Ingredient List**: Users can view all ingredients required for each recipe, making grocery shopping easy.
+- **Search Functionality**: Find recipes quickly using the search feature based on dish names or ingredients.
+- **User Favorites**: Save your favorite recipes for easy access later.
+- **Cultural Insights**: Learn about the cultural significance of each dish and its origin.
 
-This project is a starting point for a Flutter application.
+## Technology Stack
+- **Flutter**: Framework for building natively compiled applications for mobile from a single codebase.
+- **Dart**: Programming language used to write Flutter applications.
+- **Firebase**: Used for backend services such as authentication and data storage.
+- **REST API**: Integration with external APIs to fetch recipe data.
 
-A few resources to get you started if this is your first Flutter project:
+## Installation
+To run the **Mobile-Flutter-NusaFood** application locally, follow these steps:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/username/Mobile-Flutter-NusaFood.git
+2. Navigate to the project directory:
+   ```bash
+   cd Mobile-Flutter-NusaFood
+3. Install the dependencies:
+   ```bash
+   flutter pub get
+4. Connect your device or start an emulator.
+5. Run the application:
+   ```bash
+   flutter run
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
